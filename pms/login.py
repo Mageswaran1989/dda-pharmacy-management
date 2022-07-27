@@ -5,7 +5,7 @@ from yaml import SafeLoader
 
 # Initialize connection.
 # Uses st.experimental_singleton to only run once.
-@st.experimental_singleton
+# @st.experimental_singleton
 def init_authenticator():
     with open('config/root_credentials.yaml') as file:
         config = yaml.load(file, Loader=SafeLoader)

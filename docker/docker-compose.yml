@@ -9,6 +9,7 @@ services:
     ports:
       - '5432:5432'
     volumes:
+      - ./sql/pharmacy.sql:/docker-entrypoint-initdb.d/init.sql
       - db:/var/lib/postgresql/data
 volumes:
   db:
