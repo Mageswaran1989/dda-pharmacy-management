@@ -13,8 +13,7 @@ from pms.login import init_authenticator
 if __name__ == "__main__":
     authenticator, name, authentication_status, username = init_authenticator()
     if authentication_status:
-        st.write("# Welcome to Pharmacy Management 👋")
-        st.sidebar.success("Page Options")
+        st.write("# Welcome to Pharmacy Management")
         authenticator.logout("Logout", "sidebar")
     elif not authentication_status:
         st.error('Username/password is incorrect')

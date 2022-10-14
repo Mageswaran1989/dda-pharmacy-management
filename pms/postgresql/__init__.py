@@ -44,6 +44,10 @@ def delete(query, data):
         cur.execute(query, data)
         conn.commit()
 
+def update(query, data):
+    with conn.cursor() as cur:
+        cur.execute(query, data)
+        conn.commit()
 
 # Perform query.
 # Uses st.experimental_memo to only rerun when the query changes or after 10 min.
@@ -61,4 +65,5 @@ def insert_query(query, records):
         result = cur.executemany(query, records)
         conn.commit()
         print(cur.rowcount, "Record inserted successfully into the table")
+    return result
 

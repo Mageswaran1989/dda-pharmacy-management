@@ -4,7 +4,7 @@ from streamlit_option_menu import option_menu
 
 conn = init_db_connection()
 
-st.title("Supplier")
+st.title("Customer")
 
 with st.sidebar:
     # https://icons.getbootstrap.com/
@@ -17,24 +17,22 @@ with st.sidebar:
 
 def clear_text():
     st.session_state["name"] = ""
-    st.session_state["address"] = ""
     st.session_state["phone"] = ""
 
 
 if selected == "Add":
     with st.form("my_form", clear_on_submit=True):
         name = st.text_input("Name", value="", key="name")
-        address = st.text_input("Address", value="", key="address")
         phone = st.text_input("Phone", value="", key="phone")
 
         submitted = st.form_submit_button("Add")
 
         if submitted:
-            insert_query("insert into Supplier(name, address, phone) values (%s,%s,%s)", [(name, address, phone)])
+            insert_query("insert into Customer(name, phone) values (%s,%s)", [(name, phone)])
 
-        print(submitted, name, address, phone)
+        print(submitted, name, phone)
 elif selected == "View":
-    df = read_sql_query_as_df("select * from supplier")
+    df = read_sql_query_as_df("select * from Customer")
 
     # https://docs.streamlit.io/knowledge-base/using-streamlit/hide-row-indices-displaying-dataframe
     # CSS to inject contained in a string
@@ -58,10 +56,10 @@ elif selected == "View":
 
     st.dataframe(df)
 else:  # Delete
-    df = read_sql_query_as_df("select * from supplier")
+    df = read_sql_query_as_df("select * from Customer")
     names = df['name']
     options = st.multiselect(
-        'Which company do you wanted to delete?',
+        'Which Customer do you wanted to delete?',
         names,
         None)
     delete_button = st.button("Delete")
@@ -69,7 +67,7 @@ else:  # Delete
     print(options)
     if delete_button:
         for name in options:
-            delete("delete from supplier where name=%s;", (name,))
+            delete("delete from Customer where name=%s;", (name,))
 
 
 

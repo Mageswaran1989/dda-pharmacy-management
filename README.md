@@ -28,6 +28,13 @@ cd docker
 docker-compose up
 ```
 
+If you are already running a instance and wanted to have clean restart:
+```
+cd docker
+docker-compose down
+docker volume rm docker_db
+```
+
 Once everything works, you should see following log on the terminal:
 `db_1  | 2022-07-27 12:06:04.713 UTC [1] LOG:  database system is ready to accept connections`
 
