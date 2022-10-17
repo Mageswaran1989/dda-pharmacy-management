@@ -51,7 +51,7 @@ export PYTHONPATH=$(pwd):$PYTHONPATH
 
 python pms/hash_password.py --password admin
 
-streamlit run pms/Home.py
+  streamlit run pms/Home.py
 ```
 
 ## References

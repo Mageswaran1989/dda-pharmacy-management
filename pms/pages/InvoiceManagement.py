@@ -4,13 +4,24 @@ from streamlit_option_menu import option_menu
 
 # conn = init_db_connection()
 
-st.title("Customer")
+st.title("InvoiceManagement")
 
 
-# https://icons.getbootstrap.com/
-# https://coolsymbol.com/
-# Insert containers separated into tabs:
 view_tab, add_tab, delete_tab = st.tabs(["View", "Add", "Delete"])
+
+
+with add_tab:
+    with st.form("my_form", clear_on_submit=True):
+        name = st.text_input("Name", value="", key="name")
+        phone = st.text_input("Phone", value="", key="phone")
+
+        submitted = st.form_submit_button("Add")
+
+        if submitted:
+            result = execute("INSERT INTO Customer(name, phone) values (:name, :phone) RETURNING id;", [{"name": name, "phone": phone}])
+            for row in result:
+                id = row['id']
+            print("ID: ", id)
 
 with view_tab:
     df = read_sql_query_as_df("SELECT * FROM Customer")
@@ -29,33 +40,19 @@ with view_tab:
 
     st.dataframe(df)
 
-with add_tab:
-    with st.form("my_form", clear_on_submit=True):
-        name = st.text_input("Name", value="", key="name")
-        phone = st.text_input("Phone", value="", key="phone")
-
-        submitted = st.form_submit_button("Add")
-
-        if submitted:
-            result = execute("INSERT INTO Customer(name, phone) values (:name, :phone) RETURNING id;", [{"name": name, "phone": phone}])
-            for row in result:
-                id = row['id']
-            print("ID: ", id)
-
 with delete_tab:
     df = read_sql_query_as_df("SELECT * FROM Customer")
     names = df['name']
-    ids = df['id']
     options = st.multiselect(
         'Which Customer do you wanted to delete?',
-        list(zip(names, ids)),
-        None,
-        key="options")
+        names,
+        None)
     delete_button = st.button("Delete")
 
+    print(options)
     if delete_button:
-        for name, id in options:
-            execute("DELETE FROM Customer WHERE name=:name and id=:id;", [{"name": name, "id": id}])
+        for name in options:
+            execute("DELETE FROM Customer WHERE name=:name;", [{"name": name}])
             st.experimental_rerun()
 
 

@@ -1,0 +1,4 @@
+SearchWord: cat
+SearchWord: sky
+SearchWord: shake
+SubString: ca
