@@ -45,7 +45,9 @@ CREATE TABLE IF NOT EXISTS  Product
 (
     id  SERIAL PRIMARY KEY,
     name  VARCHAR(30),
-    brand  VARCHAR(30)
+    brand  VARCHAR(30),
+    mrp float,
+    discount float
 );
 
 CREATE TABLE IF NOT EXISTS  ProductDetails

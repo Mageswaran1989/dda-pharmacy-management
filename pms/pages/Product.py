@@ -4,7 +4,7 @@ from streamlit_option_menu import option_menu
 
 conn = init_db_connection()
 
-st.title("PRoduct")
+st.title("Product")
 
 with st.sidebar:
     # https://icons.getbootstrap.com/
@@ -20,11 +20,13 @@ if selected == "Add":
     with st.form("my_form", clear_on_submit=True):
         name = st.text_input("Name", value="", key="name")
         brand = st.text_input("brand", value="", key="brand")
+        mrp = st.text_input("mrp", value="", key="mrp")
+        discount = st.text_input("discount", value="", key="discount")
 
         submitted = st.form_submit_button("Add")
 
         if submitted:
-            insert_query("insert into Product(name, brand) values (%s,%s)", [(name, brand)])
+            insert_query("insert into Product(name, brand, mrp, discount) values (%s,%s, %s, %s)", [(name, brand, mrp, discount)])
 
         print(submitted, name, brand)
 elif selected == "View":

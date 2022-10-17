@@ -67,3 +67,12 @@ def insert_query(query, records):
         print(cur.rowcount, "Record inserted successfully into the table")
     return result
 
+# @st.experimental_memo(ttl=600)
+def insert_one(query, record):
+    with conn.cursor() as cur:
+        conn.commit()
+        cur.execute(query, record)
+        id = cur.fetchone()[0]
+        conn.commit()
+        print(cur.rowcount, "Record inserted successfully into the table")
+    return id
