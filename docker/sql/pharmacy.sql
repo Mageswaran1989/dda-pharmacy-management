@@ -28,8 +28,8 @@ CREATE TABLE IF NOT EXISTS  SalesPerson
     commission float CONSTRAINT low CHECK (commission >= 1) CONSTRAINT max CHECK (commission <= 10)
 );
 
-INSERT INTO SalesPerson(user_id, commission) VALUES (3, 8.0);
-INSERT INTO SalesPerson(user_id, commission) VALUES (4, 7.0);
+INSERT INTO SalesPerson(user_id, commission) VALUES (3, 2.0);
+INSERT INTO SalesPerson(user_id, commission) VALUES (4, 2.5);
 
 CREATE TABLE IF NOT EXISTS  Customer
 (
@@ -109,6 +109,10 @@ CREATE TABLE IF NOT EXISTS  PurchaseOrder
     supplier_id INT REFERENCES Supplier(id) ON DELETE SET NULL
 );
 
+INSERT INTO PurchaseOrder(cost, date, user_id, supplier_id) VALUES (789.79, '2022/10/17', 3, 1);
+INSERT INTO PurchaseOrder(cost, date, user_id, supplier_id) VALUES (3765, '2022/10/18', 4, 2);
+INSERT INTO PurchaseOrder(cost, date, user_id, supplier_id) VALUES (4085, '2022/10/18', 3, 3);
+
 CREATE TABLE IF NOT EXISTS  UIItems
 (
     id SERIAL PRIMARY KEY,
@@ -117,12 +121,23 @@ CREATE TABLE IF NOT EXISTS  UIItems
     qty INT
 );
 
+
 CREATE TABLE IF NOT EXISTS  PurchaseProductItems
 (
-    purchase_id INT REFERENCES PurchaseOrder(id) ON DELETE SET NULL,
+    purchase_id INT REFERENCES PurchaseOrder(id) ON DELETE CASCADE ,
     prod_id INT REFERENCES Product(id) ON DELETE SET NULL,
     qty INT
 );
+
+INSERT INTO PurchaseProductItems(purchase_id, prod_id, qty) VALUES (1, 1, 100);
+INSERT INTO PurchaseProductItems(purchase_id, prod_id, qty) VALUES (1, 2, 7);
+INSERT INTO PurchaseProductItems(purchase_id, prod_id, qty) VALUES (1, 3, 15);
+
+INSERT INTO PurchaseProductItems(purchase_id, prod_id, qty) VALUES (2, 4, 5);
+INSERT INTO PurchaseProductItems(purchase_id, prod_id, qty) VALUES (2, 5, 15);
+
+INSERT INTO PurchaseProductItems(purchase_id, prod_id, qty) VALUES (3, 6, 10);
+INSERT INTO PurchaseProductItems(purchase_id, prod_id, qty) VALUES (3, 7, 7);
 
 CREATE TABLE IF NOT EXISTS  Expense
 (

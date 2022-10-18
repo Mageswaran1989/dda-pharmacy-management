@@ -29,11 +29,11 @@ def display_table(table_name=None, query=None):
     return df
 
 
-def handle_table_deletes(table_name=None, id_col='id', other_col='name'):
+def handle_table_deletes(table_name=None, id_col='id', other_col='name', msg='Select an item to delete'):
     df = read_sql_query_as_df(f"SELECT * FROM {table_name}")
     items = list(zip(df[other_col], df[id_col]))
     options = st.multiselect(
-        'Select to delete?',
+        msg,
         items if len(items) > 0 else [("", "")],
         None)
     delete_button = st.button("Delete")

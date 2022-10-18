@@ -4,10 +4,12 @@ from streamlit_option_menu import option_menu
 from datetime import datetime
 # conn = init_db_connection()
 from utils import display_table, handle_table_deletes, multiselect_options, select_options
+import plotly.figure_factory as ff
+import plotly.express as px
 
 st.title("Purchase")
 
-view_tab, add_tab, delete_tab = st.tabs(["View", "Add", "Delete"])
+dashboard_tab, view_tab, add_tab, delete_tab = st.tabs(["DashBoard", "View", "Add", "Delete"])
 
 view_query = "SELECT p.id, s.name as Supplier, p.cost, p.date, u.name as User FROM PurchaseOrder as p , Supplier as s, UserInfo as u  WHERE p.supplier_id = s.id and u.id = p.user_id"
 
@@ -25,6 +27,11 @@ def get_cost():
 st.session_state['date'] = datetime.today()
 st.session_state['cost'] = get_cost()
 
+with dashboard_tab:
+    # https://plotly.com/python/bar-charts/
+    df = read_sql_query_as_df(view_query)
+    fig = px.bar(df, x="date", y="cost", color='supplier', barmode='group', text_auto=True, title='Purchase History')
+    st.plotly_chart(fig, use_container_width=True)
 
 with add_tab:
     # ------------------------------------------------------------------------------------------------------------------
@@ -99,7 +106,7 @@ with add_tab:
                 last_inserted_purchase_id = row['id']
             print("ID: ", last_inserted_purchase_id)
 
-            for prodi_id, qty in zip(ui_items_df['prod_id'], ui_items_df['qty']):
+            for prod_id, qty in zip(ui_items_df['prod_id'], ui_items_df['qty']):
                 execute("INSERT INTO PurchaseProductItems(purchase_id, prod_id, qty) VALUES (:purchase_id, :prod_id, :qty)",
                         [{"purchase_id": last_inserted_purchase_id, "prod_id": prod_id, "qty": qty}])
 
@@ -112,11 +119,13 @@ with view_tab:
     ret = select_options(query=view_query, col1="id", col2="supplier", text="Select Purchase order to view its items")
     if ret is not None:
         purchase_id, supplier_name = ret
-        display_table(query=f"SELECT p.name, pd.mrp, pp.qty, pp.purchase_id from PurchaseProductItems as pp, ProductDetails as pd, Product as p WHERE pp.purchase_id ='{purchase_id}' and pp.prod_id = pd.prod_id and pd.prod_id = p.id")
+        display_table(query=f"SELECT p.name, pd.mrp, pp.qty from PurchaseProductItems as pp, ProductDetails as pd, Product as p WHERE pp.purchase_id ='{purchase_id}' and pp.prod_id = pd.prod_id and pd.prod_id = p.id")
 
 
 with delete_tab:
     handle_table_deletes(table_name="PurchaseOrder", id_col="id", other_col="date")
+
+
 
 
 

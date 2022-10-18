@@ -1,12 +1,13 @@
 import streamlit as st
 from db_utils.sqlalchemy_backend import execute, read_sql_query_as_df
 from streamlit_option_menu import option_menu
+from utils import display_table, handle_table_deletes, multiselect_options, select_options
 
 # conn = init_db_connection()
 
 st.title("UserInfo")
 
-view_tab, add_tab, category_tab, delete_tab = st.tabs(["View", "Add",  "Category", "Delete"])
+view_tab, add_tab, category_tab, delete_tab = st.tabs(["View", "Add",  "User Details", "Delete"])
 
 
 with add_tab:
@@ -24,73 +25,19 @@ with add_tab:
                          [{"name": name, "phone": phone, "title": title, "salary": salary, "joining_date": joining_date}])
 
 with view_tab:
-    df = read_sql_query_as_df("SELECT * FROM UserInfo")
-
-    # https://docs.streamlit.io/knowledge-base/using-streamlit/hide-row-indices-displaying-dataframe
-    # CSS to inject contained in a string
-    hide_table_row_index = """
-                <style>
-                thead tr th:first-child {display:none}
-                tbody th {display:none}
-                </style>
-                """
-
-    # CSS to inject contained in a string
-    hide_dataframe_row_index = """
-                <style>
-                .row_heading.level0 {display:none}
-                .blank {display:none}
-                </style>
-                """
-
-    # Inject CSS with Markdown
-    st.markdown(hide_table_row_index, unsafe_allow_html=True)
-
-    st.dataframe(df)
+    st.subheader("User Details")
+    display_table(table_name="UserInfo")
 
     # ------------------------------------------------------------------------------------------------------------------
 
-    df = read_sql_query_as_df("SELECT * FROM Admin")
+    st.subheader("Admin Levels")
+    display_table(query="SELECT u.name, a.level FROM UserInfo u, Admin a WHERE u.id = a.user_id")
 
-    # https://docs.streamlit.io/knowledge-base/using-streamlit/hide-row-indices-displaying-dataframe
-    # CSS to inject contained in a string
-    hide_table_row_index = """
-                <style>
-                thead tr th:first-child {display:none}
-                tbody th {display:none}
-                </style>
-                """
-
-    # CSS to inject contained in a string
-    hide_dataframe_row_index = """
-                <style>
-                .row_heading.level0 {display:none}
-                .blank {display:none}
-                </style>
-                """
-
-    # Inject CSS with Markdown
-    st.markdown(hide_table_row_index, unsafe_allow_html=True)
-
-    st.dataframe(df)
 
     # ------------------------------------------------------------------------------------------------------------------
 
-    df = read_sql_query_as_df("SELECT * FROM SalesPerson")
-
-    # https://docs.streamlit.io/knowledge-base/using-streamlit/hide-row-indices-displaying-dataframe
-    # CSS to inject contained in a string
-    hide_table_row_index = """
-                <style>
-                thead tr th:first-child {display:none}
-                tbody th {display:none}
-                </style>
-                """
-
-    # Inject CSS with Markdown
-    st.markdown(hide_table_row_index, unsafe_allow_html=True)
-
-    st.dataframe(df)
+    st.subheader("SalesPerson Commission")
+    display_table(query="SELECT u.name, s.commission FROM UserInfo u, SalesPerson s WHERE u.id = s.user_id")
 
 with category_tab:
     st.header("Admin Levels")
@@ -129,19 +76,7 @@ with category_tab:
         execute(query, [{"user_id": option[1], "level": level}])
 
 with delete_tab:
-    df = read_sql_query_as_df("SELECT * FROM UserInfo")
-    names = df['name']
-    options = st.multiselect(
-        'Which company do you wanted to delete?',
-        names,
-        None)
-    delete_button = st.button("Delete")
-
-    print(options)
-    if delete_button:
-        for name in options:
-            execute("DELETE FROM UserInfo WHERE name=:name;", [{"name": name}])
-            st.experimental_rerun()
+    handle_table_deletes(table_name="UserInfo", id_col="id", other_col="name")
 
 
 
