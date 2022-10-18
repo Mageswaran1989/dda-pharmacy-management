@@ -33,6 +33,14 @@ with dashboard_tab:
     fig = px.bar(df, x="date", y="cost", color='supplier', barmode='group', text_auto=True, title='Purchase History')
     st.plotly_chart(fig, use_container_width=True)
 
+
+    df1 = read_sql_query_as_df("SELECT date, sum(cost) as Cost  FROM PurchaseOrder GROUP BY date")
+    print(df1)
+    fig1 = px.bar(df1, x="date", y="cost", color='cost', text_auto=True, title='Daily Cost Incurred')
+    st.plotly_chart(fig1, use_container_width=True)
+
+
+
 with add_tab:
     # ------------------------------------------------------------------------------------------------------------------
     st.subheader("Add Items to the List")
