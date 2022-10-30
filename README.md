@@ -40,9 +40,9 @@ Once everything works, you should see following log on the terminal:
 
 Use any DBclinet to connect to the Postgresql Server, wit following credentials:
 ```
-username: postgresql
-password: postgresql
-database: postgresql
+username: postgres
+password: postgres
+database: postgres
 ```
 
 ### Streamlit
@@ -51,7 +51,7 @@ export PYTHONPATH=$(pwd):$PYTHONPATH
 
 python pms/hash_password.py --password admin
 
-  streamlit run pms/Home.py
+streamlit run pms/Home.py
 ```
 
 ## References
