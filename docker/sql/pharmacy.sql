@@ -58,7 +58,7 @@ INSERT INTO Product(name, brand) VALUES ('Cpink', 'Cipla');
 
 CREATE TABLE IF NOT EXISTS  ProductDetails
 (
-    prod_id  INT REFERENCES Product(id) ON DELETE SET NULL,
+    prod_id  INT PRIMARY KEY REFERENCES Product(id) ON DELETE SET NULL,
     mrp float,
     discount float,
     expiry_date DATE

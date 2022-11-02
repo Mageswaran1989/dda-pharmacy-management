@@ -9,7 +9,7 @@ st.title("Product")
 
 
 # Insert containers separated into tabs:
-view_tab, add_tab, delete_tab = st.tabs(["View", "Add", "Delete"])
+view_tab, add_tab, add_details, delete_tab = st.tabs(["View", "Add Product", "Add Product Details", "Delete"])
 
 
 with add_tab:
@@ -23,6 +23,31 @@ with add_tab:
             execute("insert into Product(name, brand) values (:name, :brand)", [{"name": name, "brand": brand}])
 
         print(submitted, name, brand)
+
+with add_details:
+    # prod_id, mrp, discount, expiry_date
+    st.header("Admin Levels")
+    df = read_sql_query_as_df("SELECT * FROM Product")
+
+    ids = df['id'].to_list()
+    names = df['name'].to_list()
+    brands = df['brand'].to_list()
+    data = list(zip(ids, names, brands))
+
+    # prod_id, mrp, discount, expiry_date
+    option = st.selectbox('Update Product Details for:', data)
+
+    mrp = st.text_input("MRP", value="", key="mrp")
+    discount = st.text_input("Discount", value="", key="discount")
+    expiry_date = st.text_input("Expiry Date", value="", key="expirydate")
+
+    level_button = st.button("Update", key="level_button")
+
+    if level_button:
+        prod_id = option[0]
+        query = f"INSERT INTO ProductDetails(prod_id, mrp, discount, expiry_date) VALUES (:prod_id, :mrp, :discount, :expiry_date) ON CONFLICT (prod_id) DO UPDATE SET mrp = :mrp, discount = :discount, expiry_date = :expiry_date"
+        print(query)
+        execute(query, [{"prod_id": prod_id, "mrp": mrp, "discount": discount, "expiry_date": expiry_date}])
 
 with view_tab:
     df = read_sql_query_as_df("SELECT * FROM Product")
@@ -40,6 +65,17 @@ with view_tab:
     st.markdown(hide_table_row_index, unsafe_allow_html=True)
 
     st.dataframe(df)
+    display_table(query="SELECT p.id, p.name, p.brand, pd.mrp, pd.discount, pd.expiry_date FROM Product p, ProductDetails pd WHERE p.id = pd.prod_id")
+
+    st.header("Enquiry")
+    qname = st.text_input("Name", value="", key="qname")
+    query_button = st.button("Get Details", key="query_button")
+
+    if query_button:
+        qname = qname.lower()
+        display_table(
+            query=f"SELECT p.id, p.name, p.brand, pd.mrp, pd.discount, pd.expiry_date FROM Product p, ProductDetails pd WHERE p.id = pd.prod_id AND position('{qname}' in lower(p.name)) > 0")
+
 
 with delete_tab:
     df = read_sql_query_as_df("SELECT * FROM Product")
