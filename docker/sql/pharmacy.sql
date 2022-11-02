@@ -13,13 +13,8 @@ INSERT INTO UserInfo(name, phone, title, salary, joining_date)  VALUES ('Rani', 
 INSERT INTO UserInfo(name, phone, title, salary, joining_date)  VALUES ('John', '9352542343', 'SalesPerson', '13000', '01/08/2022');
 INSERT INTO UserInfo(name, phone, title, salary, joining_date)  VALUES ('Vidya', '7708087709', 'SalesPerson', '13000', '03/09/2022');
 INSERT INTO UserInfo(name, phone, title, salary, joining_date)  VALUES ('Aakash', '9000000001', 'Admin', '14000', '03/09/2022');
-INSERT INTO UserInfo(name, phone, title, salary, joining_date)  VALUES ('Sowmiya V S', '9000000002', 'SalesPerson', '13890', '23/05/2022');
+INSERT INTO UserInfo(name, phone, title, salary, joining_date)  VALUES ('SowmiyaVS', '9000000002', 'SalesPerson', '13890', '02/05/2022');
 INSERT INTO UserInfo(name, phone, title, salary, joining_date)  VALUES ('Suhail', '9000000003', 'SalesPerson', '33000', '03/06/2022');
-INSERT INTO UserInfo(name, phone, title, salary, joining_date)  VALUES ('Jeena', '9000000004', 'SalesPerson', '15000', '02/07/2022');
-INSERT INTO UserInfo(name, phone, title, salary, joining_date)  VALUES ('Subash', '9000000005', 'SalesPerson', '13800', '01/08/2022');
-INSERT INTO UserInfo(name, phone, title, salary, joining_date)  VALUES ('Anand', '9000000006', 'SalesPerson', '19000', '03/10/2022')
-INSERT INTO UserInfo(name, phone, title, salary, joining_date)  VALUES ('Umesh', '9000000007', 'Admin', '20000', '12/12/2022');
-INSERT INTO UserInfo(name, phone, title, salary, joining_date)  VALUES ('User X', '9000000008', 'SalesPerson', '235000', '12/12/2022');
 
 CREATE TABLE IF NOT EXISTS  Admin
 (
@@ -147,12 +142,12 @@ INSERT INTO Supplier(name, address, phone) VALUES ('Arya Vaidya', 'Sundarapuram,
 INSERT INTO Supplier(name, address, phone) VALUES ('AV Medicals', 'Vellalore, Coimbatore', 9894063263);
 INSERT INTO Supplier(name, address, phone) VALUES ('Sai Mithra', 'Thudiyalur, Coimbatore', 9323351353);
 INSERT INTO Supplier(name, address, phone) VALUES ('Arya Vaidya', 'Sundarapuram, Coimbatore', 8763503241);
-INSERT INTO Supplier(name, address, phone) VALUES ('AB Medivals', 'Thiruvarur', 'Thiruvarur', 9894063263);
-INSERT INTO Supplier(name, address, phone) VALUES ('Medhoc Care', 'Medavakkam', 'Chennai', 9876543210);
+INSERT INTO Supplier(name, address, phone) VALUES ('ABMedivals', 'Thiruvarur Thiruvarur', 9894063263);
+INSERT INTO Supplier(name, address, phone) VALUES ('MedhocCare', 'Medavakkam Chennai', 9876543210);
 INSERT INTO Supplier(name, address, phone) VALUES ('XY Hospitals', 'palladam, Coimbatore', 8763503241);
 INSERT INTO Supplier(name, address, phone) VALUES ('Vellore Medicals', 'Vellore, Coimbatore', 9894063263);
-INSERT INTO Supplier(name, address, phone) VALUES ('AB Pharmacy', 'Street1', 'Chennai', 9323351353);
-INSERT INTO Supplier(name, address, phone) VALUES ('Vcare Medicals', 'Street 2', 'Chennai', 8763503241);
+INSERT INTO Supplier(name, address, phone) VALUES ('ABPharmacy', 'Street1 Chennai', 9323351353);
+INSERT INTO Supplier(name, address, phone) VALUES ('Vcare Medicals', 'Street 2 Chennai', 8763503241);
 INSERT INTO Supplier(name, address, phone) VALUES ('Balaji Medicals', 'Vellalore, Coimbatore', 9894063263);
 INSERT INTO Supplier(name, address, phone) VALUES ('City Medicals', 'Thudiyalur, Coimbatore', 9323351353);
 
@@ -166,15 +161,15 @@ CREATE TABLE IF NOT EXISTS  PurchaseOrder
     supplier_id INT REFERENCES Supplier(id) ON DELETE SET NULL
 );
 
-INSERT INTO PurchaseOrder(cost, date, user_id, supplier_id) VALUES (789.79, '2022/10/17', 3, 1);
-INSERT INTO PurchaseOrder(cost, date, user_id, supplier_id) VALUES (3765, '2022/10/18', 4, 2);
-INSERT INTO PurchaseOrder(cost, date, user_id, supplier_id) VALUES (4085, '2022/10/18', 3, 3);
-INSERT INTO PurchaseOrder(cost, date, user_id, supplier_id) VALUES (200.25, '2022/10/02', 1, 1);
-INSERT INTO PurchaseOrder(cost, date, user_id, supplier_id) VALUES (576, '2022/11/01', 2, 2);
-INSERT INTO PurchaseOrder(cost, date, user_id, supplier_id) VALUES (683, '2022/11/02', 5, 3);
-INSERT INTO PurchaseOrder(cost, date, user_id, supplier_id) VALUES (779, '2022/09/17', 8, 1);
-INSERT INTO PurchaseOrder(cost, date, user_id, supplier_id) VALUES (307, '2022/07/18', 7, 2);
-INSERT INTO PurchaseOrder(cost, date, user_id, supplier_id) VALUES (105.9, '2022/06/18', 6, 3);
+INSERT INTO PurchaseOrder(cost, date, user_id, supplier_id) VALUES (789.79, '2022/11/15', 3, 1);
+INSERT INTO PurchaseOrder(cost, date, user_id, supplier_id) VALUES (3765, '2022/11/16', 4, 2);
+INSERT INTO PurchaseOrder(cost, date, user_id, supplier_id) VALUES (4085, '2022/11/17', 3, 3);
+INSERT INTO PurchaseOrder(cost, date, user_id, supplier_id) VALUES (2767, '2022/11/18', 6, 4);
+-- INSERT INTO PurchaseOrder(cost, date, user_id, supplier_id) VALUES (576, '2022/11/01', 2, 2);
+-- INSERT INTO PurchaseOrder(cost, date, user_id, supplier_id) VALUES (683, '2022/11/02', 5, 3);
+-- INSERT INTO PurchaseOrder(cost, date, user_id, supplier_id) VALUES (779, '2022/09/17', 7, 1);
+-- INSERT INTO PurchaseOrder(cost, date, user_id, supplier_id) VALUES (307, '2022/07/18', 7, 2);
+-- INSERT INTO PurchaseOrder(cost, date, user_id, supplier_id) VALUES (105.9, '2022/06/18', 6, 3);
 
 CREATE TABLE IF NOT EXISTS  UIItems
 (
@@ -199,6 +194,8 @@ INSERT INTO PurchaseProductItems(purchase_id, prod_id, qty) VALUES (2, 4, 5);
 INSERT INTO PurchaseProductItems(purchase_id, prod_id, qty) VALUES (2, 5, 15);
 INSERT INTO PurchaseProductItems(purchase_id, prod_id, qty) VALUES (3, 6, 10);
 INSERT INTO PurchaseProductItems(purchase_id, prod_id, qty) VALUES (3, 7, 7);
+INSERT INTO PurchaseProductItems(purchase_id, prod_id, qty) VALUES (4, 5, 3);
+INSERT INTO PurchaseProductItems(purchase_id, prod_id, qty) VALUES (4, 7, 10);
 
 CREATE TABLE IF NOT EXISTS  Expense
 (

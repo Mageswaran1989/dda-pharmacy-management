@@ -25,7 +25,8 @@ pip install -r requiremetns.txt
 ### Postgresql DB Server Setup
 ```
 cd docker
-docker-compose up
+docker-compose up # to see logs
+docker-compose up -d # to run in the background
 ```
 
 If you are already running a instance and wanted to have clean restart:
