@@ -21,8 +21,7 @@ with add_tab:
 
         if submitted:
             execute("insert into Product(name, brand) values (:name, :brand)", [{"name": name, "brand": brand}])
-
-        print(submitted, name, brand)
+            st.experimental_rerun()
 
 with add_details:
     # prod_id, mrp, discount, expiry_date
@@ -39,15 +38,15 @@ with add_details:
 
     mrp = st.text_input("MRP", value="", key="mrp")
     discount = st.text_input("Discount", value="", key="discount")
-    expiry_date = st.text_input("Expiry Date", value="", key="expirydate")
+    expiry_date = st.date_input("Expiry Date", key="expirydate")
 
     level_button = st.button("Update", key="level_button")
 
     if level_button:
         prod_id = option[0]
         query = f"INSERT INTO ProductDetails(prod_id, mrp, discount, expiry_date) VALUES (:prod_id, :mrp, :discount, :expiry_date) ON CONFLICT (prod_id) DO UPDATE SET mrp = :mrp, discount = :discount, expiry_date = :expiry_date"
-        print(query)
         execute(query, [{"prod_id": prod_id, "mrp": mrp, "discount": discount, "expiry_date": expiry_date}])
+        st.experimental_rerun()
 
 with view_tab:
     df = read_sql_query_as_df("SELECT * FROM Product")
@@ -78,19 +77,7 @@ with view_tab:
 
 
 with delete_tab:
-    df = read_sql_query_as_df("SELECT * FROM Product")
-    names = df['name']
-    options = st.multiselect(
-        'Which Product do you wanted to delete?',
-        names,
-        None)
-    delete_button = st.button("Delete")
-
-    print(options)
-    if delete_button:
-        for name in options:
-            execute("delete from Product where name=:name;", [{"name": name}])
-            st.experimental_rerun()
+    handle_table_deletes(table_name="Product", id_col="id", other_col="name")
 
 
 

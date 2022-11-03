@@ -31,7 +31,7 @@ def display_table(table_name=None, query=None):
 
 def handle_table_deletes(table_name=None, id_col='id', other_col='name', msg='Select an item to delete'):
     df = read_sql_query_as_df(f"SELECT * FROM {table_name}")
-    items = list(zip(df[other_col], df[id_col]))
+    items = list(zip(df[other_col].astype(str), df[id_col]))
     options = st.multiselect(
         msg,
         items if len(items) > 0 else [("", "")],

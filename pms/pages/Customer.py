@@ -28,6 +28,7 @@ with add_tab:
             for row in result:
                 id = row['id']
             print("ID: ", id)
+            st.experimental_rerun()
 
 with delete_tab:
     handle_table_deletes(table_name="Customer", id_col="id", other_col="name")

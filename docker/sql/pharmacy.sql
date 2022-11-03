@@ -87,7 +87,7 @@ INSERT INTO Product(name, brand) VALUES ('prolomet', 'Cipla');
 
 CREATE TABLE IF NOT EXISTS  ProductDetails
 (
-    prod_id  INT PRIMARY KEY REFERENCES Product(id) ON DELETE SET NULL,
+    prod_id  INT PRIMARY KEY REFERENCES Product(id) ON DELETE CASCADE ,
     mrp float,
     discount float,
     expiry_date DATE
@@ -165,11 +165,7 @@ INSERT INTO PurchaseOrder(cost, date, user_id, supplier_id) VALUES (789.79, '202
 INSERT INTO PurchaseOrder(cost, date, user_id, supplier_id) VALUES (3765, '2022/11/16', 4, 2);
 INSERT INTO PurchaseOrder(cost, date, user_id, supplier_id) VALUES (4085, '2022/11/17', 3, 3);
 INSERT INTO PurchaseOrder(cost, date, user_id, supplier_id) VALUES (2767, '2022/11/18', 6, 4);
--- INSERT INTO PurchaseOrder(cost, date, user_id, supplier_id) VALUES (576, '2022/11/01', 2, 2);
--- INSERT INTO PurchaseOrder(cost, date, user_id, supplier_id) VALUES (683, '2022/11/02', 5, 3);
--- INSERT INTO PurchaseOrder(cost, date, user_id, supplier_id) VALUES (779, '2022/09/17', 7, 1);
--- INSERT INTO PurchaseOrder(cost, date, user_id, supplier_id) VALUES (307, '2022/07/18', 7, 2);
--- INSERT INTO PurchaseOrder(cost, date, user_id, supplier_id) VALUES (105.9, '2022/06/18', 6, 3);
+
 
 CREATE TABLE IF NOT EXISTS  UIItems
 (

@@ -1,3 +1,5 @@
+import datetime
+
 import streamlit as st
 from db_utils.sqlalchemy_backend import execute, read_sql_query_as_df
 from streamlit_option_menu import option_menu
@@ -15,7 +17,8 @@ with add_tab:
         name = st.text_input("Name", value="", key="name")
         phone = st.text_input("Phone", value="", key="phone")
         salary = st.text_input("Salary", value="", key="salary")
-        joining_date = st.text_input("Joining Date (MM/DD/YYYY)", value="", key="joining_date")
+        joining_date = st.date_input("Joining Date (MM/DD/YYYY)", key="joining_date",
+                                     min_value=datetime.datetime(1970,1,1))
         title = st.selectbox("Title", ("Admin", "SalesPerson"))
         submitted = st.form_submit_button("Add")
 
@@ -23,6 +26,7 @@ with add_tab:
             print({"name": name, "phone": phone, "title": title, "salary": salary, "joining_date": joining_date})
             execute("INSERT INTO UserInfo(name, phone, title, salary, joining_date) VALUES (:name, :phone, :title, :salary, :joining_date)",
                          [{"name": name, "phone": phone, "title": title, "salary": salary, "joining_date": joining_date}])
+            st.experimental_rerun()
 
 with view_tab:
     st.subheader("User Details")
@@ -56,6 +60,7 @@ with category_tab:
         query = f"INSERT INTO Admin(user_id, level) VALUES (:user_id, :level) ON CONFLICT (user_id) DO UPDATE SET level = :level"
         print(query)
         execute(query, [{"user_id": option[1], "level": level}])
+        st.experimental_rerun()
 
     # ------------------------------------------------------------------------------------------------------------------
     st.header("Sales Commission")
@@ -74,6 +79,7 @@ with category_tab:
         query = f"INSERT INTO Admin(user_id, level) VALUES (:user_id, :level) ON CONFLICT (user_id) DO UPDATE SET level = :level"
         print(query)
         execute(query, [{"user_id": option[1], "level": level}])
+        st.experimental_rerun()
 
 with delete_tab:
     handle_table_deletes(table_name="UserInfo", id_col="id", other_col="name")

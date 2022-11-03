@@ -21,6 +21,7 @@ with add_tab:
         if submitted:
             execute("insert into Supplier(name, address, phone) values (:name, :address, :phone)",
                     [{"name": name, "address": address, "phone": phone}])
+            st.experimental_rerun()
 
         print(submitted, name, address, phone)
 
